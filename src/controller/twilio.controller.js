@@ -1,11 +1,13 @@
 
 import fs from 'fs'
 import Fuse from 'fuse.js';
-import MessagingResponse1 from 'twilio';
+import twilio from 'twilio';
+const MessagingResponse = twilio.twiml.MessagingResponse;
+
+
 
 // const { MessagingResponse } = require("twilio").twiml;
 const faqs = JSON.parse(fs.readFileSync("faqs.json", "utf-8"));
-const MessagingResponse = MessagingResponse1.twiml
 // Fuse.js options
 const fuse = new Fuse(faqs, {
     keys: ["question"],
