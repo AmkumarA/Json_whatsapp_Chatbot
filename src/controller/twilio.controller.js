@@ -1,21 +1,17 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const fs = require("fs");
-const Fuse = require("fuse.js");
-const { MessagingResponse } = require("twilio").twiml;
 
-const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
+import fs from 'fs'
+import Fuse from 'fuse.js';
+import MessagingResponse1 from 'twilio';
 
+// const { MessagingResponse } = require("twilio").twiml;
 const faqs = JSON.parse(fs.readFileSync("faqs.json", "utf-8"));
-
+const MessagingResponse = MessagingResponse1.twiml
 // Fuse.js options
 const fuse = new Fuse(faqs, {
     keys: ["question"],
     threshold: 0.4 // Lower = stricter match, try 0.3 to 0.5
 });
-
-app.post("/whatsapp", (req, res) => {
+const sendQuerry = (req, res) => {
     const twiml = new MessagingResponse();
     const msg = req.body.Body.toLowerCase();
 
@@ -33,8 +29,6 @@ app.post("/whatsapp", (req, res) => {
 
     res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
-});
+};
 
-app.listen(3000, () => {
-    console.log("Chatbot running on http://localhost:3000");
-});
+export default sendQuerry
